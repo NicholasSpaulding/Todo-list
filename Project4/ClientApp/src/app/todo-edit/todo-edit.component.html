@@ -1,0 +1,82 @@
+<title>Todo List</title>
+<div class="modal-header">
+  <h4 class="modal-title">New Task</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label for="todoName">Task</label>
+      <input
+        type="text"
+        class="form-control"
+        name="todoName"
+        id="todoName"
+        [(ngModel)]="todo.name"
+      />
+    </div>
+
+    <!-- TRYING TO GET TAGS WORKING AND RADIO BUTTON FOR STATE -->
+    <!-- <div class="form-group">
+      <label for="todoType">Type</label>
+      <input
+        type="list"
+        class="form-control"
+        name="todoType"
+        id="todoType"
+        [(ngModel)]="todo.types[0].name"
+      />
+    </div> -->
+    <!-- <div class="form-group">
+      <div>
+        <input
+          class="fomr-control"
+          type="radio"
+          id="complete"
+          name="complete"
+          value="true"
+          [(ngModel)]="todo.state"
+        />
+        <label for="complete">Finished</label>
+      </div>
+    </div> -->
+    <div class="form-group">
+      <label for="dueDate">Date Due</label>
+      <div class="input-group">
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          name="dp"
+          [(ngModel)]="dueDate"
+          ngbDatepicker
+          #d="ngbDatepicker"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            (click)="d.toggle()"
+            type="button"
+          >
+            <fa-icon [icon]="faCalendar"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="dueTime">Time Due</label>
+      <ngb-timepicker name="dueTime" [(ngModel)]="dueTime"></ngb-timepicker>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="save()">
+    Save
+  </button>
+</div>

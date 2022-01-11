@@ -1,0 +1,132 @@
+<div class="container" style="width: 100%; display: inline-block">
+  <button class="btn-outline-primary btn float-left" (click)="add()">
+    Add
+  </button>
+  <mat-form-field class="float-right">
+    <input
+      (keyup)="applyFilter($event.target.value)"
+      matInput
+      placeholder="Filter"
+    />
+  </mat-form-field>
+</div>
+<!--
+<table matSort (matSortChange)="sortData($event)" class="table">
+  <thead>
+    <tr>
+      <th mat-sort-header="name">Task</th>
+      <th mat-sort-header="date">Due Date</th>
+      <th>Completed</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let todo of todos">
+      <td *ngIf="isLate(todo)" class="bg-danger">{{ todo.name }}</td>
+      <td *ngIf="isLate(todo)" class="bg-danger">
+        {{ todo.dueDate | date: "medium" }}
+      </td>
+      <td *ngIf="isLate(todo)" class="bg-danger">
+        <button class="btn btn-outline-info">Complete</button>
+      </td>
+      <td *ngIf="isLate(todo)" class="bg-danger">
+        <button class="btn btn-outline-dark">Delete</button>
+      </td>
+
+      <td *ngIf="isClose(todo) && !isLate(todo)" class="bg-warning">
+        {{ todo.name }}
+      </td>
+      <td *ngIf="isClose(todo) && !isLate(todo)" class="bg-warning">
+        {{ todo.dueDate | date: "medium" }}
+      </td>
+      <td *ngIf="isClose(todo) && !isLate(todo)" class="bg-warning">
+        <button class="btn btn-outline-info">Complete</button>
+      </td>
+      <td *ngIf="isClose(todo) && !isLate(todo)" class="bg-warning">
+        <button class="btn btn-outline-dark">Delete</button>
+      </td>
+
+      <td *ngIf="!isLate(todo) && !isClose(todo)">{{ todo.name }}</td>
+      <td *ngIf="!isLate(todo) && !isClose(todo)">
+        {{ todo.dueDate | date: "medium" }}
+      </td>
+      <td *ngIf="!isLate(todo) && !isClose(todo)">
+        <button class="btn btn-outline-info">Complete</button>
+      </td>
+      <td *ngIf="!isLate(todo) && !isClose(todo)">
+        <button class="btn btn-outline-dark">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table> -->
+
+<mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <!-- Types Column -->
+  <ng-container matColumnDef="types">
+    <mat-header-cell mat-sort-header *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <div *ngIf="todo.types[0] != null">
+        <p *ngFor="let todoname of todo.types">cleaning</p>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Name -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell mat-sort-header *matHeaderCellDef> Task </mat-header-cell>
+    <mat-cell *matCellDef="let todo"
+      ><div *ngIf="todo.name != null">{{ todo.name }}</div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Date Column
+    {{ todoname.name }}
+    -->
+
+  <ng-container matColumnDef="duedate">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>
+      Due Date
+    </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <div *ngIf="isLate(todo)" class="bg-danger p-1">
+        {{ todo.dueDate | date: "medium" }}
+      </div>
+      <div *ngIf="isClose(todo) && !isLate(todo)" class="bg-warning p-1">
+        {{ todo.dueDate | date: "medium" }}
+      </div>
+      <div *ngIf="!isLate(todo) && !isClose(todo)" class="p-1">
+        {{ todo.dueDate | date: "medium" }}
+      </div>
+    </mat-cell>
+  </ng-container>
+  <!-- Complete Column -->
+  <ng-container matColumnDef="complete">
+    <mat-header-cell *matHeaderCellDef> Complete </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <button class="btn btn-outline-info" (click)="complete(todo)">
+        Complete
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <button class="btn btn-outline-dark" (click)="delete(todo)">
+        Delete
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- edit Column -->
+  <ng-container matColumnDef="edit">
+    <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <button class="btn btn-outline-dark" (click)="edit(todo)">Edit</button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

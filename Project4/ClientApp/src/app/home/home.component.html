@@ -1,0 +1,76 @@
+<div class="container" style="width: 100%; display: inline-block">
+  <button class="btn-outline-primary btn float-left" (click)="add()">
+    Add
+  </button>
+  <mat-form-field class="float-right">
+    <input
+      (keyup)="applyFilter($event.target.value)"
+      matInput
+      placeholder="Filter"
+    />
+  </mat-form-field>
+</div>
+
+<mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell mat-sort-header *matHeaderCellDef> Task </mat-header-cell>
+    <mat-cell *matCellDef="let todo"> {{ todo.name }} </mat-cell>
+  </ng-container>
+
+  <!-- Date Column -->
+  <ng-container matColumnDef="duedate">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>
+      Due Date
+    </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <div *ngIf="isLate(todo)" class="bg-danger p-1">
+        {{ todo.dueDate | date: "medium" }}
+      </div>
+      <div *ngIf="isClose(todo) && !isLate(todo)" class="bg-warning p-1">
+        {{ todo.dueDate | date: "medium" }}
+      </div>
+      <div *ngIf="!isLate(todo) && !isClose(todo)" class="p-1">
+        {{ todo.dueDate | date: "medium" }}
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Types Column -->
+  <ng-container matColumnDef="types">
+    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <div *ngIf="todo.types[0] != null">
+        <div *ngFor="let todoname of todo.types">
+          {{ todoname.name }}
+        </div>
+      </div>
+    </mat-cell>
+  </ng-container>
+  <!-- Complete Column -->
+  <ng-container matColumnDef="complete">
+    <mat-header-cell *matHeaderCellDef> Complete </mat-header-cell>
+    <mat-cell *matCellDef="let todo"> Completed </mat-cell>
+  </ng-container>
+
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <button class="btn btn-outline-dark" (click)="delete(todo)">
+        Delete
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- edit Column -->
+  <ng-container matColumnDef="edit">
+    <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
+    <mat-cell *matCellDef="let todo">
+      <button class="btn btn-outline-dark" (click)="edit(todo)">Edit</button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
